@@ -3,6 +3,8 @@
 // 2. Select source footage sequence folder
 // 3. Select mask sequence folder
 // 4. Wait
+// Hold ESC if you want to stop the process
+// This script saves TIFF-files, bit-depth is source depended
 
 // open file function
 function openImageFile(file) {
@@ -115,7 +117,7 @@ function deSelect() {
     desc889.putEnumerated( idT, idOrdn, idNone );
     executeAction( idsetd, desc889, DialogModes.NO );
 }
-// poista layer
+// delete layer
 function deleteLayer() {
     var idDlt = charIDToTypeID( "Dlt " );
     var desc895 = new ActionDescriptor();
@@ -156,7 +158,6 @@ function saveImageFile(file) {
     desc20.putEnumerated( idsaveStage, idsaveStageType, idsaveSucceeded );
     executeAction( idsave, desc20, DialogModes.NO );
 }
-// ------------------------------------------------------------------------
 // run function
 function run(){
     for (var i = 0; i < footageFiles.length; i++) {
@@ -175,22 +176,21 @@ function run(){
             selectLayer(maskLayer);
             deSelect();
             deleteLayer();
-            var processedFolder = Folder(footageFolderPath + "processed");
+            var processedFolder = Folder(saveFolderPath);
             if (!processedFolder.exists) {
                 processedFolder.create();
             }
-            var processedFolderName = "processed/";
-            saveImageFile(new File(footageFolderPath + processedFolderName + "ca_" +footageDocument.name));
+            saveImageFile(new File(saveFolderPath + "/ca_" +footageDocument.name));
             closeFile();
         }
     }
     alert("Processing done!");
 }
-// ------------------------------------------------------------------------
-var currentFolder = Folder.current;
-var footageFolder = currentFolder.selectDlg("Select source footage folder:");
+//var currentFolder = Folder.current;
+var footageFolder = Folder.selectDialog("Select source footage folder:");
 var footageFolderPath = footageFolder.fsName.replace(/\\/g,'/') + "/";
-var maskFolder = currentFolder.selectDlg("Select mask folder:");
+var saveFolderPath = footageFolder.parent.fsName.replace(/\\/g,'/') + "/result";
+var maskFolder = Folder.selectDialog("Select mask folder:");
 var maskFolderPath = maskFolder.fsName.replace(/\\/g,'/') + "/";
 var footageFiles = Folder(footageFolderPath).getFiles();
 var maskFiles = Folder(maskFolderPath).getFiles();
