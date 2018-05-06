@@ -1,7 +1,7 @@
 // Content Aware Batch Script
 // 1. Run the script
-// 2. Select source footage sequence folder
-// 3. Select mask sequence folder
+// 2. Select source footage sequence folder (TIFFs are nice)
+// 3. Select mask sequence folder (Alpha matte PNGs are fine)
 // 4. Wait
 // Hold ESC if you want to stop the process
 // This script saves TIFF-files, bit-depth is source depended
